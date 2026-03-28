@@ -33,17 +33,19 @@ An engaging **RPG-style coding game** that makes learning programming fun! Battl
 - **🔄 Auto-deployment**: Netlify + Render ready
 
 ## 📸 Screenshots
+<img width="1280" height="694" alt="Screenshot 2026-03-27 at 22 20 35" src="https://github.com/user-attachments/assets/7ccfc538-437a-434a-814b-447fe0d45780" />
 
-### 🎮 Main Gameplay
-*Add your screenshots here to showcase the app in action*
 
-### 🎨 Theme System
-*Show light and dark mode screenshots*
 
-### 📱 Mobile View
-*Demonstrate mobile responsiveness*
 
-## 🚀 Quick Start
+<img width="1280" height="694" alt="Screenshot 2026-03-27 at 22 19 36" src="https://github.com/user-attachments/assets/589cb6b9-4582-4709-a6ed-16d6c0890234" />
+
+
+
+
+
+
+
 
 ### 📋 Prerequisites
 - **Node.js** 16+ 
