@@ -35,15 +35,13 @@ An engaging **RPG-style coding game** that makes learning programming fun! Battl
 ## 📸 Screenshots
 
 ### 🎮 Main Gameplay
-![Battle Arena](https://via.placeholder.com/800x400/4A90E2/FFFFFF?text=⚔️+Battle+Arena)
-![Character Selection](https://via.placeholder.com/800x400/4A90E2/FFFFFF?text=🧙‍♂️+Choose+Your+Hero)
+*Add your screenshots here to showcase the app in action*
 
 ### 🎨 Theme System
-![Light Mode](https://via.placeholder.com/800x400/87CEEB/000000?text=🌞+Light+Mode)
-![Dark Mode](https://via.placeholder.com/800x400/2C3E50/FFFFFF?text=🌙+Dark+Mode)
+*Show light and dark mode screenshots*
 
 ### 📱 Mobile View
-![Mobile Gameplay](https://via.placeholder.com/400x600/4A90E2/FFFFFF?text=📱+Mobile+Ready)
+*Demonstrate mobile responsiveness*
 
 ## 🚀 Quick Start
 
@@ -153,10 +151,22 @@ coding-lesson-app/
 - **Prisma** - Database ORM
 - **SQLite** - Database
 
+### 🎮 Programming Languages Taught
+- **Python** - Variables, functions, loops, data structures
+- **JavaScript** - DOM manipulation, events, async programming
+- **HTML** - Semantic tags, forms, accessibility
+- **CSS** - Selectors, layout, animations, Flexbox, Grid
+
 ### 🚀 Deployment
 - **Netlify** - Frontend hosting
 - **Render** - Backend hosting
 - **GitHub** - Version control
+
+### 🛠️ Development Tools
+- **VS Code** - Code editor
+- **Git** - Version control
+- **npm** - Package management
+- **Terminal** - Command line operations
 
 ## 🎯 Educational Impact
 
