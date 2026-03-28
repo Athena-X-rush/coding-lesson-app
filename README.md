@@ -151,7 +151,7 @@ coding-lesson-app/
 - **Node.js** - Runtime environment
 - **Express** - Web framework
 - **Prisma** - Database ORM
-- **SQLite** - Database
+- **PostgreSQL** - Database
 
 ### 🎮 Programming Languages Taught
 - **Python** - Variables, functions, loops, data structures
