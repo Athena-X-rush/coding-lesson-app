@@ -18,6 +18,10 @@ An engaging **RPG-style coding game** that makes learning programming fun! Battl
 - **🎯 Code Validation**: Real-time feedback with specific error messages
 - **🧙‍♀️ Hint System**: Get help when stuck (costs mana)
 
+
+### 📊 Progress Dashboard: Visualize player stats, completed dungeons, and overall progression using React props and state, updating based on user       actions
+
+
 ### 🎨 User Experience
 - **🌙 Theme Toggle**: Light and dark modes with child-friendly colors
 - **📱 Mobile Responsive**: Works on all devices
