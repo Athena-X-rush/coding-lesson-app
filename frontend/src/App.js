@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { Play, CheckCircle, BookOpen, Code, Trophy, MessageCircle, Flame, ChevronRight, Star, Sun, Moon } from 'lucide-react';
+import ProgressDashboard from './components/ProgressDashboard';
 import './App.css';
 
 const DUNGEON_LEVELS = {
@@ -1207,6 +1208,7 @@ function App() {
             <nav className="space-y-2">
               {[
                 { id: 'dungeon', icon: '🏰', label: 'Dungeon' },
+                { id: 'progress', icon: '📊', label: 'Progress' },
                 { id: 'quiz', icon: '🧪', label: 'Knowledge Challenge' },
                 { id: 'leaderboard', icon: '🏆', label: 'Heroes' },
                 { id: 'chat', icon: '💬', label: 'Tavern' },
@@ -1715,6 +1717,19 @@ function App() {
                     </button>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Progress Dashboard Page */}
+          {currentPage === 'progress' && (
+            <div className="p-8">
+              <div className="max-w-4xl mx-auto">
+                <ProgressDashboard 
+                  character={character}
+                  completed={completed.length}
+                  totalDungeons={12}
+                />
               </div>
             </div>
           )}

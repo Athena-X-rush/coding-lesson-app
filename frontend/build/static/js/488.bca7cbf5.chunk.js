@@ -1,0 +1,2 @@
+"use strict";(globalThis.webpackChunkcoding_lesson_app_frontend=globalThis.webpackChunkcoding_lesson_app_frontend||[]).push([[488],{488(n,e,s){new WeakMap;new Set}}]);
+//# sourceMappingURL=488.bca7cbf5.chunk.js.map
