@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { Play, CheckCircle, BookOpen, Code, Trophy, MessageCircle, Flame, ChevronRight, Star, Sun, Moon } from 'lucide-react';
 import ProgressDashboard from './components/ProgressDashboard';
+import DailyChallenges from './components/DailyChallenges';
 import './App.css';
 
 const DUNGEON_LEVELS = {
@@ -1209,6 +1210,7 @@ function App() {
               {[
                 { id: 'dungeon', icon: '🏰', label: 'Dungeon' },
                 { id: 'progress', icon: '📊', label: 'Progress' },
+                { id: 'daily', icon: '📅', label: 'Daily Quests' },
                 { id: 'quiz', icon: '🧪', label: 'Knowledge Challenge' },
                 { id: 'leaderboard', icon: '🏆', label: 'Heroes' },
                 { id: 'chat', icon: '💬', label: 'Tavern' },
@@ -1717,6 +1719,23 @@ function App() {
                     </button>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Daily Challenges Page */}
+          {currentPage === 'daily' && (
+            <div className="p-8">
+              <div className="max-w-4xl mx-auto">
+                <DailyChallenges 
+                  character={character}
+                  onChallengeComplete={(challenge) => {
+                    setCharacter(prev => ({
+                      ...prev,
+                      xp: prev.xp + challenge.xp
+                    }));
+                  }}
+                />
               </div>
             </div>
           )}
