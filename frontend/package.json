@@ -32,7 +32,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy:netlify": "npm run build && npx netlify-cli deploy --prod --dir=build",
+    "deploy:cloudflare": "npm run build && npx wrangler pages deploy build --project-name coding-lesson-app",
+    "deploy:github": "npm run build && git add build/ && git commit -m 'Update build' && git push origin main"
   },
   "eslintConfig": {
     "extends": [

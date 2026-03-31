@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { Play, CheckCircle, BookOpen, Code, Trophy, MessageCircle, Flame, ChevronRight, Star, Sun, Moon } from 'lucide-react';
+import { MessageCircle, Star, Sun, Moon } from 'lucide-react';
 import ProgressDashboard from './components/ProgressDashboard';
 import DailyChallenges from './components/DailyChallenges';
 import './App.css';

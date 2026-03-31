@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Clock, Star, Zap, Trophy, Calendar } from 'lucide-react';
+import { Target, Clock, Star, Trophy, Calendar } from 'lucide-react';
 
 const DailyChallenges = ({ character, onChallengeComplete }) => {
   const [challenges, setChallenges] = useState([]);
