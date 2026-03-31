@@ -246,7 +246,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 📞 Contact
 
 - **GitHub**: [@Athena-X-rush](https://github.com/Athena-X-rush)
-- **Project**: https://fun2-coding.netlify.app/
+- **Project**: https://13668960.coding-lesson-app.pages.dev/
 
 ---
 
