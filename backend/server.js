@@ -1,88 +1,78 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 require('dotenv').config();
+
+// Import routes
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, { cors: { origin: '*' } });
 const prisma = new PrismaClient();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
-
-const PORT = process.env.PORT || 5001;
-
-// In-memory storage for anonymous users (for simplicity)
-const anonymousUsers = new Map();
+[Error] 
+// Global doubts for chat functionality
 const globalDoubts = [];
 
-// Anonymous user endpoints
-app.post('/api/user', async (req, res) => {
-  try {
-    const { userId, username, xp, streak, completed } = req.body;
-    
-    const userData = {
-      userId,
-      username,
-      xp: xp || 0,
-      streak: streak || 7,
-      completed: completed || [],
-      lastSeen: new Date()
-    };
-    
-    anonymousUsers.set(userId, userData);
-    
-    res.json({ success: true, user: userData });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 
-app.get('/api/user/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const user = anonymousUsers.get(userId);
-    
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ error: 'User not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Leaderboard endpoint
+// Leaderboard endpoint (for authenticated users)
 app.get('/api/leaderboard', async (req, res) => {
   try {
-    const users = Array.from(anonymousUsers.values())
-      .sort((a, b) => b.xp - a.xp)
-      .slice(0, 10);
-    
-    res.json(users);
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        xp: true,
+        level: true,
+        firstName: true,
+        lastName: true
+      },
+      orderBy: { xp: 'desc' },
+      take: 10
+    });
+
+    const leaderboard = users.map((user, index) => ({
+      rank: index + 1,
+      id: user.id,
+      username: user.username,
+      displayName: user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user.username,
+      xp: user.xp,
+      level: user.level
+    }));
+
+    res.json({ leaderboard });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Leaderboard error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-app.post('/api/doubts', async (req, res) => {
-  try {
-    const { user, msg, time, userId } = req.body;
-    
+// Socket.io for real-time features
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+
+  socket.on('join-room', (room) => {
+    socket.join(room);
+    console.log(`User ${socket.id} joined room ${room}`);
+  });
+
+  socket.on('doubt', (data) => {
     const doubt = {
-      user,
-      msg,
-      time,
-      userId,
+      id: Date.now(),
+      user: data.user,
+      text: data.text,
       timestamp: new Date()
     };
-    
     globalDoubts.push(doubt);
     
     // Keep only last 50 doubts
@@ -90,78 +80,46 @@ app.post('/api/doubts', async (req, res) => {
       globalDoubts.shift();
     }
     
-    // Broadcast to all connected clients
-    io.emit('newDoubt', doubt);
-    
-    res.json({ success: true, doubt });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+    io.emit('doubt', doubt);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
 });
 
-app.get('/api/doubts', async (req, res) => {
-  try {
-    res.json(globalDoubts);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+// Environment variables
+const PORT = process.env.PORT || 5001;
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date(),
+    version: '2.0.0'
+  });
 });
 
-io.on('connection', (socket) => {
-    socket.on('join-doubt', (room) => {
-        socket.join(room);
-    });
-    socket.on('send-message', (data) => {
-        io.to(data.room).emit('receive-message', data);
-    });
+// Get global doubts (for chat)
+app.get('/api/doubts', (req, res) => {
+  res.json({ doubts: globalDoubts });
 });
 
-app.post('/api/auth/register', async (req, res) => {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-        data: { email, password: hashedPassword }
-    });
-    res.json({ user });
-});
-
-app.post('/api/auth/login', async (req, res) => {
-    const { email, password } = req.body;
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.json({ token });
-});
-
-app.get('/api/lessons', async (req, res) => {
-    const lessons = await prisma.lesson.findMany();
-    res.json(lessons);
-});
-
-app.get('/api/groups', async (req, res) => {
-    const groups = await prisma.group.findMany({
-        include: { members: { include: { user: true } } }
-    });
-    res.json(groups);
-});
-
-app.post('/api/groups/join', async (req, res) => {
-    const { groupId, userId } = req.body;
-    const membership = await prisma.userGroup.create({
-        data: { userId, groupId }
-    });
-    res.json(membership);
-});
-
-app.get('/api/progress', async (req, res) => {
-    const progress = await prisma.progress.findMany({
-        include: { user: true }
-    });
-    res.json(progress);
-});
-
+// Start server
 server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+});
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('🔄 Shutting down gracefully...');
+  await prisma.$disconnect();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('🔄 Shutting down gracefully...');
+  await prisma.$disconnect();
+  process.exit(0);
 });

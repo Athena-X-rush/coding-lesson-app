@@ -1,0 +1,11 @@
+frontend/node_modules/.cache/
+*.cache
+.wrangler/
+frontend/node_modules/.cache/
+*.cache
+.wrangler/
+node_modules/
+.env
+backend/.env
+frontend/.env
+backend/prisma/dev.db

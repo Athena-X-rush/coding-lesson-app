@@ -10,10 +10,18 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
+  username  String   @unique
   password  String
+  firstName String?
+  lastName  String?
+  xp        Int      @default(0)
+  level     Int      @default(1)
+  character Json?    // Store character selection as JSON
   progress  Progress[]
+  inventory Inventory[]
   groups    UserGroup[]
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Lesson {
@@ -41,11 +49,28 @@ model Question {
 }
 
 model Progress {
-  id      Int  @id @default(autoincrement())
-  userId  Int
-  quizId  Int
-  score   Int
-  user    User @relation(fields: [userId], references: [id])
+  id          Int   @id @default(autoincrement())
+  userId      Int
+  dungeonId   String // Store dungeon identifier
+  completed   Boolean @default(false)
+  score       Int    @default(0)
+  attempts    Int    @default(0)
+  bestTime    Int?   // Store best completion time in seconds
+  user        User   @relation(fields: [userId], references: [id])
+  completedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, dungeonId])
+}
+
+model Inventory {
+  id       Int  @id @default(autoincrement())
+  userId   Int
+  item     String
+  quantity Int   @default(1)
+  user     User @relation(fields: [userId], references: [id])
+  
+  @@unique([userId, item])
 }
 
 model Group {
