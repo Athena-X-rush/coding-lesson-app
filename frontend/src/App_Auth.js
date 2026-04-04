@@ -540,25 +540,28 @@ function App() {
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <button
               onClick={() => setCurrentPage('dungeons')}
-              className={`p-6 rounded-xl ${colors.primary} text-white hover:opacity-90 transition`}
+              className={`p-6 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl`}
             >
-              <h3 className="text-xl font-bold mb-2">🏰 Dungeons</h3>
+              <div className="text-3xl mb-3">🏰</div>
+              <h3 className="text-xl font-bold mb-2">Dungeons</h3>
               <p className="text-sm opacity-90">Battle coding monsters</p>
             </button>
             
             <button
               onClick={() => setCurrentPage('progress')}
-              className={`p-6 rounded-xl ${colors.secondary} hover:opacity-80 transition`}
+              className={`p-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl`}
             >
-              <h3 className="text-xl font-bold mb-2">📊 Progress</h3>
+              <div className="text-3xl mb-3">📊</div>
+              <h3 className="text-xl font-bold mb-2">Progress</h3>
               <p className="text-sm opacity-90">View your achievements</p>
             </button>
             
             <button
               onClick={() => setCurrentPage('daily')}
-              className={`p-6 rounded-xl ${colors.secondary} hover:opacity-80 transition`}
+              className={`p-6 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl`}
             >
-              <h3 className="text-xl font-bold mb-2">📅 Daily Challenges</h3>
+              <div className="text-3xl mb-3">📅</div>
+              <h3 className="text-xl font-bold mb-2">Daily Challenges</h3>
               <p className="text-sm opacity-90">Complete daily quests</p>
             </button>
           </div>
@@ -591,9 +594,10 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <button
             onClick={() => setCurrentPage('menu')}
-            className={`mb-6 px-4 py-2 rounded-lg ${colors.secondary} hover:opacity-80`}
+            className="mb-6 px-6 py-3 rounded-xl bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
           >
-            ← Back to Menu
+            <span>←</span>
+            <span>Back to Menu</span>
           </button>
           
           <h1 className="text-3xl font-bold mb-8">Choose Your Dungeon</h1>
@@ -602,26 +606,34 @@ function App() {
             {Object.entries(DUNGEON_LEVELS).map(([lang, dungeons]) => (
               <div key={lang}>
                 <h2 className="text-2xl font-bold mb-4 capitalize">{lang} Dungeons</h2>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {dungeons.map((dungeon) => {
                     const isCompleted = completed.includes(`${lang}-${dungeon.id}`);
                     return (
                       <div
                         key={dungeon.id}
                         onClick={() => startDungeon(lang, dungeon.id)}
-                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                        className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                           isCompleted 
-                            ? 'border-green-500 bg-green-500/20' 
-                            : `${colors.border} hover:border-blue-400`
+                            ? 'border-green-500 bg-green-500/20 hover:bg-green-500/30' 
+                            : `${colors.border} hover:border-blue-400 hover:bg-blue-500/10`
                         }`}
                       >
-                        <h3 className="font-bold mb-2">
-                          {isCompleted ? '✅' : '🔒'} {dungeon.name}
-                        </h3>
-                        <p className="text-sm mb-2">{dungeon.description}</p>
-                        <p className="text-xs opacity-75">
-                          Reward: {dungeon.reward.xp} XP, {dungeon.reward.item}
-                        </p>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="font-bold text-lg">
+                            {isCompleted ? '✅' : '🔒'} {dungeon.name}
+                          </h3>
+                          <div className="text-2xl">
+                            {isCompleted ? '🏆' : '⚔️'}
+                          </div>
+                        </div>
+                        <p className="text-sm mb-4 opacity-90">{dungeon.description}</p>
+                        <div className="text-xs opacity-75 bg-black/20 p-2 rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <span>Reward: {dungeon.reward.xp} XP</span>
+                            <span>{dungeon.reward.item}</span>
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
@@ -643,9 +655,10 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <button
             onClick={() => setCurrentPage('dungeons')}
-            className={`mb-6 px-4 py-2 rounded-lg ${colors.secondary} hover:opacity-80`}
+            className="mb-6 px-6 py-3 rounded-xl bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
           >
-            ← Back to Dungeons
+            <span>←</span>
+            <span>Back to Dungeons</span>
           </button>
           
           <div className="grid lg:grid-cols-2 gap-8">
@@ -673,9 +686,10 @@ function App() {
               
               <button
                 onClick={runCode}
-                className="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 rounded-lg font-bold hover:from-red-600 hover:to-orange-600 transition"
+                className="w-full bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 text-white p-6 rounded-xl font-bold text-lg hover:from-red-600 hover:via-orange-600 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
               >
-                ⚔️ Attack!
+                <span className="text-2xl">⚔️</span>
+                <span>Attack!</span>
               </button>
             </div>
             
@@ -743,7 +757,7 @@ function App() {
                 <button
                   onClick={submitQuizAnswer}
                   disabled={selectedAnswer === null}
-                  className="w-full bg-blue-500 text-white p-3 rounded-lg font-bold hover:bg-blue-600 transition disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 rounded-xl font-bold hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   Submit Answer
                 </button>
@@ -762,9 +776,10 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <button
             onClick={() => setCurrentPage('menu')}
-            className={`mb-6 px-4 py-2 rounded-lg ${colors.secondary} hover:opacity-80`}
+            className="mb-6 px-6 py-3 rounded-xl bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
           >
-            ← Back to Menu
+            <span>←</span>
+            <span>Back to Menu</span>
           </button>
           
           <ProgressDashboard 
@@ -784,9 +799,10 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <button
             onClick={() => setCurrentPage('menu')}
-            className={`mb-6 px-4 py-2 rounded-lg ${colors.secondary} hover:opacity-80`}
+            className="mb-6 px-6 py-3 rounded-xl bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2"
           >
-            ← Back to Menu
+            <span>←</span>
+            <span>Back to Menu</span>
           </button>
           
           <DailyChallenges />
