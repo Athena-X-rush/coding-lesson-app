@@ -18,7 +18,6 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 [Error] 
-// Global doubts for chat functionality
 const globalDoubts = [];
 
 // API Routes

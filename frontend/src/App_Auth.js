@@ -4,6 +4,8 @@ import { MessageCircle, Star, Sun, Moon, LogOut, User, Settings } from 'lucide-r
 import ProgressDashboard from './components/ProgressDashboard';
 import DailyChallenges from './components/DailyChallenges';
 import Auth from './components/Auth';
+import { NotificationProvider, useNotifications } from './components/NotificationProvider';
+import NotificationContainer from './components/NotificationContainer';
 import apiService from './services/api';
 import './App.css';
 
@@ -139,6 +141,8 @@ const CHARACTERS = {
 };
 
 function App() {
+  const { showSuccess, showError, showWarning, showInfo } = useNotifications();
+  
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -214,6 +218,12 @@ function App() {
     setUser(userData);
     setIsAuthenticated(true);
     apiService.setToken(token);
+    
+    // Show welcome notification
+    showSuccess(
+      'Welcome Back! 👋',
+      `Great to see you, ${userData.firstName || userData.username}!`
+    );
     
     // Set initial character data
     setCharacter(prev => ({
@@ -329,12 +339,32 @@ function App() {
       setBattleResult(`🎉 Victory! You earned ${dungeon.reward.xp} XP and found ${dungeon.reward.item}!`);
       saveProgress(`${selectedLang}-${dungeon.id}`, true, dungeon.reward.xp);
       
+      // Show success notification
+      showSuccess(
+        'Battle Victory! 🎉',
+        `You defeated ${dungeon.monster} and earned ${dungeon.reward.xp} XP!`
+      );
+      
+      // Check for level up
+      if (newLevel > character.level) {
+        showSuccess(
+          'Level Up! ⚡',
+          `Congratulations! You reached level ${newLevel}!`
+        );
+      }
+      
       if (dungeon.quiz) {
         setTimeout(() => setShowQuiz(true), 2000);
       }
     } else {
       setCharacter(prev => ({ ...prev, hp: Math.max(0, prev.hp - 10) }));
       setBattleResult(feedback);
+      
+      // Show error notification
+      showError(
+        'Spell Failed! ❌',
+        'Your code didn\'t work. Try again!'
+      );
     }
   };
 
@@ -378,6 +408,12 @@ function App() {
     setCharacter(newCharacter);
     saveCharacter(newCharacter);
     setCurrentPage('menu');
+    
+    // Show hero creation notification
+    showSuccess(
+      'Hero Created! 🦸',
+      `${heroName} the ${selectedCharacter.name} is ready for adventure!`
+    );
   };
 
   const getThemeColors = () => {
@@ -814,4 +850,11 @@ function App() {
   return null;
 }
 
-export default App;
+const AppWithNotifications = () => (
+  <NotificationProvider>
+    <App />
+    <NotificationContainer />
+  </NotificationProvider>
+);
+
+export default AppWithNotifications;
