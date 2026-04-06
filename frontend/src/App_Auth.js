@@ -6,6 +6,8 @@ import DailyChallenges from './components/DailyChallenges';
 import Auth from './components/Auth';
 import { NotificationProvider, useNotifications } from './components/NotificationProvider';
 import NotificationContainer from './components/NotificationContainer';
+import { SoundProvider, useSound } from './components/SoundProvider';
+import SoundToggle from './components/SoundToggle';
 import apiService from './services/api';
 import './App.css';
 
@@ -142,6 +144,7 @@ const CHARACTERS = {
 
 function App() {
   const { showSuccess, showError, showWarning, showInfo } = useNotifications();
+  const { playVictorySound, playLevelUpSound, playErrorSound, playClickSound, playBattleStartSound } = useSound();
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
@@ -345,12 +348,18 @@ function App() {
         `You defeated ${dungeon.monster} and earned ${dungeon.reward.xp} XP!`
       );
       
+      // Play victory sound
+      playVictorySound();
+      
       // Check for level up
       if (newLevel > character.level) {
         showSuccess(
           'Level Up! ⚡',
           `Congratulations! You reached level ${newLevel}!`
         );
+        
+        // Play level up sound
+        playLevelUpSound();
       }
       
       if (dungeon.quiz) {
@@ -365,6 +374,9 @@ function App() {
         'Spell Failed! ❌',
         'Your code didn\'t work. Try again!'
       );
+      
+      // Play error sound
+      playErrorSound();
     }
   };
 
@@ -377,6 +389,9 @@ function App() {
     setShowQuiz(false);
     setQuizResult(null);
     setCurrentPage('battle');
+    
+    // Play battle start sound
+    playBattleStartSound();
   };
 
   const submitQuizAnswer = () => {
